@@ -848,10 +848,10 @@ function showToast(msg) {
 }
 
 // ============================================================
-// CLAUDE API CALL
+// AI API CALL (Anthropic via Worker proxy)
 // ============================================================
 async function callClaude(prompt, systemPrompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch('https://scc-api-proxy.cbscodingsuccess.workers.dev', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
