@@ -508,6 +508,13 @@
     font-size: 0.7rem;
   }
 
+  .btn-canva {
+    background: rgba(120,87,255,0.1);
+    border: 1px solid rgba(120,87,255,0.4);
+    color: #a78bfa;
+  }
+  .btn-canva:hover { background: rgba(120,87,255,0.2); border-color: #a78bfa; }
+
   .btn-delete {
     background: transparent;
     border: 1px solid rgba(229,115,115,0.3);
@@ -855,7 +862,7 @@ async function callClaude(prompt, systemPrompt) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
       system: systemPrompt,
       messages: [{ role: 'user', content: prompt }]
@@ -978,6 +985,7 @@ async function runPipeline() {
         <p style="white-space:pre-wrap;">${result}</p>
         <div class="saved-actions">
           <button class="btn btn-primary btn-sm" onclick="copyText(this)" data-text="${encoded}">⎘ Copy</button>
+          <button class="btn btn-canva btn-sm" onclick="sendToCanva(this)" data-text="${encoded}" data-label="${labelEncoded}">✦ Send to Canva</button>
           <button class="btn btn-promote btn-sm" onclick="saveReady(this)" data-text="${encoded}" data-label="${labelEncoded}">⚡ Ready to Go</button>
           <button class="btn btn-save btn-sm" onclick="saveItem('content', this)" data-text="${encoded}" data-label="${labelEncoded}">✦ Save for Later</button>
         </div>
@@ -992,6 +1000,19 @@ async function runPipeline() {
 function copyText(btn) {
   const text = decodeURIComponent(btn.getAttribute('data-text'));
   navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard ✦'));
+}
+
+function sendToCanva(btn) {
+  const text = decodeURIComponent(btn.getAttribute('data-text'));
+  const label = decodeURIComponent(btn.getAttribute('data-label') || 'SCC Content');
+  // Copy text to clipboard first
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Content copied! Opening Canva...');
+    // Open Canva new design - reel/story size
+    setTimeout(() => {
+      window.open('https://www.canva.com/design/new?type=your_story', '_blank');
+    }, 800);
+  });
 }
 
 // ============================================================
