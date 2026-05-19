@@ -869,7 +869,8 @@ async function callClaude(prompt, systemPrompt) {
     })
   });
   const data = await res.json();
-  return data.content?.[0]?.text || 'No response received.';
+  if (data.error) return `Error: ${data.error.message || JSON.stringify(data.error)}`;
+  return data.content?.[0]?.text || 'No response received. Raw: ' + JSON.stringify(data);
 }
 
 // ============================================================
